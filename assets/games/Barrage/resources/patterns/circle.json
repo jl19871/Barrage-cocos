@@ -1,0 +1,31 @@
+{
+  "name": "circle",
+  "type": "circle",
+  "description": "圆形弹幕 - 从中心向四周发射",
+  "top": "main",
+  "actions": {
+    "main": [
+      {
+        "type": "repeat",
+        "params": {
+          "times": 12,
+          "actions": [
+            {
+              "type": "fire",
+              "params": {
+                "direction": {
+                  "value": 0,
+                  "type": "sequence"
+                },
+                "speed": {
+                  "value": 150,
+                  "type": "absolute"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

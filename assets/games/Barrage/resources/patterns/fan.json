@@ -1,0 +1,89 @@
+{
+  "name": "fan",
+  "type": "fan",
+  "description": "扇形弹幕 - 向前方扇形区域发射",
+  "top": "main",
+  "actions": {
+    "main": [
+      {
+        "type": "repeat",
+        "params": {
+          "times": 5,
+          "actions": [
+            {
+              "type": "fire",
+              "params": {
+                "direction": {
+                  "value": 75,
+                  "type": "absolute"
+                },
+                "speed": {
+                  "value": 180,
+                  "type": "absolute"
+                }
+              }
+            },
+            {
+              "type": "fire",
+              "params": {
+                "direction": {
+                  "value": 82.5,
+                  "type": "absolute"
+                },
+                "speed": {
+                  "value": 180,
+                  "type": "absolute"
+                }
+              }
+            },
+            {
+              "type": "fire",
+              "params": {
+                "direction": {
+                  "value": 90,
+                  "type": "absolute"
+                },
+                "speed": {
+                  "value": 180,
+                  "type": "absolute"
+                }
+              }
+            },
+            {
+              "type": "fire",
+              "params": {
+                "direction": {
+                  "value": 97.5,
+                  "type": "absolute"
+                },
+                "speed": {
+                  "value": 180,
+                  "type": "absolute"
+                }
+              }
+            },
+            {
+              "type": "fire",
+              "params": {
+                "direction": {
+                  "value": 105,
+                  "type": "absolute"
+                },
+                "speed": {
+                  "value": 180,
+                  "type": "absolute"
+                }
+              }
+            },
+            {
+              "type": "wait",
+              "params": {
+                "frames": 10
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

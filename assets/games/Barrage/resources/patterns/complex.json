@@ -1,0 +1,72 @@
+{
+  "name": "complex",
+  "type": "complex",
+  "description": "复杂弹幕 - 多层嵌套的重复和等待",
+  "top": "main",
+  "actions": {
+    "main": [
+      {
+        "type": "repeat",
+        "params": {
+          "times": 3,
+          "actions": [
+            {
+              "type": "repeat",
+              "params": {
+                "times": 8,
+                "actions": [
+                  {
+                    "type": "fire",
+                    "params": {
+                      "direction": {
+                        "value": 45,
+                        "type": "sequence"
+                      },
+                      "speed": {
+                        "value": 100,
+                        "type": "absolute"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "wait",
+              "params": {
+                "frames": 30
+              }
+            },
+            {
+              "type": "repeat",
+              "params": {
+                "times": 8,
+                "actions": [
+                  {
+                    "type": "fire",
+                    "params": {
+                      "direction": {
+                        "value": -45,
+                        "type": "sequence"
+                      },
+                      "speed": {
+                        "value": 120,
+                        "type": "absolute"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "wait",
+              "params": {
+                "frames": 30
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

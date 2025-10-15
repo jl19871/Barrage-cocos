@@ -1,0 +1,144 @@
+CCEffect %{
+  techniques:
+  - name: one
+    passes:
+    - vert: sprite-vs:vert
+      frag: sprite-fs:frag
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendSrcAlpha: one
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState:  &r1 { cullMode: none }
+      properties: &props
+        mainTexture:    { value: grey }
+        TexSize: { value: [1500, 1624],  target: texSize.xy,editor:{ visible: false} }
+        alphaScale: {
+          value: [1.0, 1.0],
+          target: texSize.zw ,
+          editor: {
+            tooltip: "原图和alpha通道图比例"
+          }
+        }
+  - name: add
+    passes:
+    - vert: sprite-vs:vert
+      frag: sprite-fs:frag
+      rasterizerState: *r1
+      depthStencilState: &d1
+        depthTest: true
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one
+          blendSrcAlpha: src_alpha
+          blendDstAlpha: one
+      properties: *props
+}%
+
+CCProgram sprite-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  #if USE_LOCAL
+    #include <builtin/uniforms/cc-local>
+  #endif
+  #if SAMPLE_FROM_RT
+    #include <common/common-define>
+  #endif
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+
+  out vec4 color;
+  out vec2 uv0;
+
+  vec4 vert () {
+    vec4 pos = vec4(a_position, 1);
+
+    #if USE_LOCAL
+      pos = cc_matWorld * pos;
+    #endif
+
+    #if USE_PIXEL_ALIGNMENT
+      pos = cc_matView * pos;
+      pos.xyz = floor(pos.xyz);
+      pos = cc_matProj * pos;
+    #else
+      pos = cc_matViewProj * pos;
+    #endif
+
+    uv0 = a_texCoord;
+    #if SAMPLE_FROM_RT
+      CC_HANDLE_RT_SAMPLE_FLIP(uv0);
+    #endif
+    color = a_color;
+
+    return pos;
+  }
+}%
+
+CCProgram sprite-fs %{
+  precision highp float;
+  #include <builtin/internal/embedded-alpha>
+  #include <builtin/internal/alpha-test>
+  // #include <builtin/uniforms/cc-global>
+
+  in vec4 color;
+  uniform Constant {
+    vec4 texSize;
+  };
+
+  // #if USE_TEXTURE
+    in vec2 uv0;
+    #pragma builtin(local)
+    uniform sampler2D mainTexture;
+  // #endif
+
+  // 左右
+  float getHAlpha(vec2 uv,float scale,float offset){
+    vec2 auv = vec2(uv.x * scale - offset,uv.y * scale);
+    return CCSampleWithAlphaSeparated(mainTexture, auv).r;
+  }
+  //上下 2:1
+   float getVAlpha(vec2 uv,float scale,float offset){
+    vec2 auv = vec2(uv.x * scale, uv.y * scale - offset);
+    return CCSampleWithAlphaSeparated(mainTexture, auv).r;
+  }
+  vec4 frag () {
+      vec4 o = vec4(1.0, 1.0, 1.0, 1.0);
+
+      o *= CCSampleWithAlphaSeparated(mainTexture, uv0);
+      o *= color;
+
+      float start = texSize.z / (texSize.z + texSize.w);
+      float scale = texSize.w / texSize.z;
+
+
+    #if USE_HORIZONTAL_VIDEO
+       // 左边获取alpha
+      if(uv0.x < 0.5){
+        discard;
+      } else {
+        // alpha
+        o.a = getHAlpha(uv0,scale,start);
+      }
+    #else
+      if(uv0.y < start){
+        discard;
+      } else {
+        // alpha
+        o.a = getVAlpha(uv0,scale,start);
+      }
+    #endif
+
+    ALPHA_TEST(o);
+    return o;
+  }
+}%

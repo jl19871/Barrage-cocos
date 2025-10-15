@@ -1,0 +1,121 @@
+{
+    "$schema": "./@types/schema/package/index.json",
+    "package_version": 2,
+    "name": "i18n-plugin",
+    "version": "1.0.0",
+    "author": "JL",
+    "editor": ">=3.8.4",
+    "scripts": {
+        "preinstall": "node ./scripts/preinstall.js",
+        "build": "tsc"
+    },
+    "description": "i18n:i18n-plugin.description",
+    "main": "./dist/main.js",
+    "dependencies": {
+        "fs-extra": "^10.0.0"
+    },
+    "devDependencies": {
+        "@cocos/creator-types": "^3.8.4",
+        "@types/fs-extra": "^9.0.13",
+        "@types/node": "^18.19.103"
+    },
+    "panels": {
+        "default": {
+            "title": "配置界面",
+            "type": "dockable",
+            "main": "dist/panels/default",
+            "engineSupport":true,
+            "size": {
+                "min-width": 400,
+                "min-height": 300,
+                "width": 1024,
+                "height": 600
+            }
+        }
+    },
+    "contributions": {
+        "menu": [
+            {
+                "path": "i18n-plugin",
+                "label": "i18n:i18n-plugin.open_panel",
+                "message": "open-panel"
+            },
+            {
+                "path": "i18n-plugin",
+                "label": "i18n:i18n-plugin.refresh_lang",
+                "message": "refreshLang"
+            },
+            {
+                "path": "i18n-plugin",
+                "label": "i18n:i18n-plugin.create_folders",
+                "message": "createFolders"
+            }
+        ],
+        "messages": {
+            "open-panel": {
+                "methods": [
+                    "openPanel"
+                ]
+            },
+            "send-to-panel": {
+                "methods": [
+                    "default.hello"
+                ]
+            },
+            "refreshLang": {
+                "methods": [
+                    "refreshLang"
+                ]
+            },
+              "createFolders": {
+                "methods": [
+                    "createFolders"
+                ]
+            },
+            "getLangStr": {
+                "methods": [
+                    "getLangStr"
+                ]
+            },
+            "setLang": {
+                "methods": [
+                    "setLang"
+                ]
+            },
+            "getLang": {
+                "methods": [
+                    "getLang"
+                ]
+            },
+            "getLangFolderUUID": {
+                "methods": [
+                    "getLangFolderUUID"
+                ]
+            },
+            "checkFolder": {
+                "methods": [
+                    "checkFolder"
+                ]
+            },
+            "getLangJson": {
+                "methods": [
+                    "getLangJson"
+                ]
+            },
+            "getCurLang": {
+                "methods": [
+                    "getCurLang"
+                ]
+            },
+            "getLangMap": {
+                "methods": [
+                    "getLangMap"
+                ]
+            }
+        }
+    },
+    "profile": {
+        "langFolder": "",
+        "curLang": ""
+    }
+}

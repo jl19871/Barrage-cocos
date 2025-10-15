@@ -1,0 +1,23 @@
+<!--
+ * @Author: JL
+ * @Date: 2025-05-21 20:33:30
+-->
+<section class="section">
+  <label>语言资源目录</label>
+  <ui-asset
+    id="langFolder"
+    droppable="cc.Asset"
+    placeholder="选择语言资源目录(请保证目录下有对应的语言文件夹)"
+  ></ui-asset>
+</section>
+
+<section id="langSelectWrap" class="section" style="display: none">
+  <label>可用语言</label>
+  <ui-select id="langSelect" class="lang-select"></ui-select>
+</section>
+
+<section class="section"></section>
+  <ui-button id="refreshBtn" style="display: none;">刷新多语言资源</ui-button>
+</section>
+
+<div id="app" class="app-output">Hello Cocos.</div>
